@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
@@ -20,28 +18,27 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $credentials = $request->only('email', 'password');
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            // Login manual
-            Auth::login($user);
+        // Gunakan Auth::attempt untuk cek otomatis password hashed
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Handle "ingat saya"
+            // Handle "ingat saya" custom cookie
             if ($request->has('remember')) {
-                Cookie::queue('remember_email', $user->email, 60 * 24 * 7); // 7 hari
+                Cookie::queue('remember_email', $request->email, 60 * 24 * 7); // 7 hari
             } else {
-                // Jika tidak dicentang, hapus cookie
                 Cookie::queue(Cookie::forget('remember_email'));
             }
 
             return redirect()->intended('/'); // redirect ke dashboard/index
         }
 
+        // Jika gagal login
         return back()->withErrors([
             'email' => 'Email atau password salah',
         ]);
@@ -51,11 +48,12 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Jangan hapus cookie email supaya "ingat saya" tetap bekerja
-        // Cookie::queue(Cookie::forget('remember_email'));
+        // Cookie tetap dipertahankan jika mau "ingat saya"
+        // Cookie::queue(Cookie::forget('remember_email')); // opsional
 
         return redirect('/login');
     }

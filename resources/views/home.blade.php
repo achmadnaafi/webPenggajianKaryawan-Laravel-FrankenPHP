@@ -41,7 +41,7 @@
       <div class="max-w-xl">
         <p class="text-lg text-black">
           <span class="text-red-600 font-semibold">Welcome,</span>
-          <a href="#" class="text-black-100 font-semibold underline">{{ Auth::user()->email }}!</a>
+          <a href="#" class="text-black-100 font-semibold underline">{{ Auth::user()->name }}!</a>
         </p>
         <p class="mt-3 text-gray-800 leading-relaxed">
           Pantau dan kelola data karyawan serta penggajian mereka dengan mudah. Melalui sistem ini,
