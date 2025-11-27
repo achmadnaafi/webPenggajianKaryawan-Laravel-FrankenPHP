@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-400 to-green-100 font-poppins">
