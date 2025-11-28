@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Data Karyawan')
+@section('title', 'Kelola Gaji Karyawan')
 
 @section('content')
 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
